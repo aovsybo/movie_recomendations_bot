@@ -1,5 +1,9 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 b1 = KeyboardButton("/Случайный_фильм")
-kb_client = ReplyKeyboardMarkup(resize_keyboard=True)
-kb_client.row(b1)
+b2 = KeyboardButton("/Другой")
+start_keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+start_keyboard.row(b1)
+search_keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+search_keyboard.row(b1)
+search_keyboard.row(b2)
