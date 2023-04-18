@@ -1,4 +1,5 @@
 import spacy
+from config import settings
 
 
 genre_names = ['аниме', 'биография', 'боевик', 'вестерн', 'военный', 'детектив', 'детский', 'для взрослых',
@@ -15,16 +16,14 @@ def text_analyse(text: str):
     nlp = spacy.load("ru_core_news_sm")
     doc = nlp(text)
     for token in doc:
-        if (token.pos_ == "NOUN" or token.pos_ in "ADJ") and token.lemma_ in genre_names:
+        if token.lemma_ in genre_names:
             filters["genres.name"] = [token.lemma_]
         elif token.pos_ == "NOUN" and token.lemma_ in year_names:
             prev_token = token.nbor(-1)
             if prev_token.pos_ == "NUM" or prev_token.pos_ == "ADJ":
-                filters["year"] = f"{prev_token.text}-2023"
-                # filters["year"] = f"{prev_token.text}"
+                filters["year"] = f"{prev_token.text}-{settings.CURRENT_YEAR}"
         elif token.pos_ == "NOUN" and token.lemma_ in rating_names:
             next_token = token.nbor(1)
             if next_token.pos_ == "NUM":
-                filters["rating.kp"] = f"{next_token.text}-10"
-                # filters["rating.kp"] = f"{next_token.text}"
+                filters["rating.kp"] = f"{round(float(next_token.text), 0)}-{settings.MAX_KP_RATING}"
     return filters

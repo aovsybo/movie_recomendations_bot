@@ -1,4 +1,5 @@
 .env
+userdata.json
 venv/
 */.idea/workspace.xml
 */.idea/tasks.xml

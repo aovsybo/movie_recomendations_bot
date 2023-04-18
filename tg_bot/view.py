@@ -17,9 +17,10 @@ async def recommend_random_movie(message: types.Message):
 
 
 # @dp.message_handler(commands=[])
+#TODO: Добавть кнопку "другой фильм"
 async def recommend_movie_by_filters(message: types.Message):
     movie_filters = text_analyse(message.text)
-    await bot.send_message(message.from_user.id, get_movie(movie_filters))
+    await bot.send_message(message.from_user.id, get_movie(movie_filters, str(message.from_user.id)))
 
 
 def register_handlers(dp: Dispatcher):
