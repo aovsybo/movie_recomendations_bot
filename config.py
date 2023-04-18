@@ -1,6 +1,5 @@
 import os
 from datetime import date
-from datetime import datetime
 
 from pydantic import BaseSettings, HttpUrl
 from dotenv import find_dotenv, load_dotenv

@@ -45,13 +45,8 @@ def get_random_movie():
         "X-API-KEY": settings.KP_API_TOKEN
     }
     params = {
-        "selectFields": ["id", "name", "year"]
+        "selectFields": ["id", "name", "rating.kp", "year"]
     }
-    response = requests.get(f"{settings.KP_API_ADDRESS}/movie/random", headers=headers, params=params).json()
-    movie = {
-        "name": response["name"],
-        "rating": response["rating"]["imdb"],
-        "year": response["year"],
-    }
+    movie = requests.get(f"{settings.KP_API_ADDRESS}/movie/random", headers=headers, params=params).json()
     return configure_movie_string(movie)
 
