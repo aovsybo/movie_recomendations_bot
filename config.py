@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     CURRENT_YEAR = date.today().strftime("%Y")
     MAX_KP_RATING = 10
     MOVIE_SEARCH_LIMIT = 10
+    USER_DATA_DIR_NAME = "userdata"
     PREV_MOVIE_FILTERS = dict()
     GENRE_NAMES = ['аниме', 'биография', 'боевик', 'вестерн', 'военный', 'детектив', 'детский', 'документальный',
                    'драма', 'история', 'комедия', 'криминал', 'мелодрама', 'музыка', 'мультфильм', 'мюзикл',

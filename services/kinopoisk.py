@@ -1,7 +1,7 @@
 import requests
 
 from config import settings
-from model import get_users_banned_movies, ban_movie_for_user
+from model import is_movie_banned, ban_movie_for_user
 
 
 def configure_movie_string(movie):
@@ -16,7 +16,6 @@ def get_movie(filters: dict, user_id: str):
     filters["selectFields"] = ["id", "name", "rating.kp", "year"]
     filters["limit"] = settings.MOVIE_SEARCH_LIMIT
     offset = 0
-    banned_ids = get_users_banned_movies(user_id)
     movie = None
     while True:
         request = requests.get(f"{settings.KP_API_ADDRESS}/movie", headers=headers, params=filters).json()
@@ -27,7 +26,7 @@ def get_movie(filters: dict, user_id: str):
         else:
             if len(movies) > 0:
                 for cur_movie in movies[offset:]:
-                    if cur_movie["id"] not in banned_ids:
+                    if not is_movie_banned(user_id, str(cur_movie["id"])):
                         movie = cur_movie
                         break
                 if movie is not None:
