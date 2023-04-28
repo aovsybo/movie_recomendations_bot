@@ -11,7 +11,7 @@ async def configure_message_by_filters(filters: dict):
     if "error" in filters.keys():
         return filters["error"]
     else:
-        return f"Советую посмотреть фильм \"{filters['name']}\" " \
+        return f"Советую посмотреть {settings.TYPE_NAME_BY_TYPE_NUMBER[filters['typeNumber']]} \"{filters['name']}\" " \
            f"{filters['year']} года с оценкой {round(filters['rating']['kp'], 1)}\n"
 
 
@@ -46,7 +46,6 @@ async def recommend_random_movie(message: types.Message):
 async def recommend_other_movie_by_filters(message: types.Message):
     movie_filters = getattr(settings, "PREV_MOVIE_FILTERS")
     movie = get_movie(movie_filters, str(message.from_user.id))
-    print(movie_filters)
     await send_movie(movie, message.from_user.id, search_keyboard)
 
 

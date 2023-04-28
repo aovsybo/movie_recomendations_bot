@@ -5,15 +5,19 @@ from config import settings
 # TODO: Сделать фильры по длительности фильма, по типу фильм-сериал и тд
 # TODO: Отсылать на похожие фильмы
 
+
 def text_analyse(text: str):
     filters = dict()
     filters["genres.name"] = []
+    filters["typeNumber"] = []
     nlp = spacy.load("ru_core_news_sm")
     doc = nlp(text)
     tokens = [token for token in doc if not token.is_stop and not token.is_punct]
     for token in tokens:
         if is_lemma_genre(token):
             filters["genres.name"].append(token.lemma_)
+        if is_lemma_type(token):
+            filters['typeNumber'].append(settings.TYPE_NUMBER_BY_TYPE_NAME[token.lemma_])
         elif is_lemma_year(token):
             filters["year"] = f"{token.nbor(-1).text}-{settings.CURRENT_YEAR}"
         elif is_lemma_rating(token):
@@ -23,6 +27,13 @@ def text_analyse(text: str):
 
 def is_lemma_genre(token):
     if token.lemma_ in settings.GENRE_NAMES or token.text in settings.GENRE_NAMES:
+        return True
+    else:
+        return False
+
+
+def is_lemma_type(token):
+    if token.lemma_ in settings.TYPE_NUMBER_BY_TYPE_NAME:
         return True
     else:
         return False

@@ -12,7 +12,23 @@ class Settings(BaseSettings):
     CURRENT_YEAR = date.today().strftime("%Y")
     MAX_KP_RATING = 10
     MOVIE_SEARCH_LIMIT = 10
-    SELECT_FIELDS = ["id", "name", "rating.kp", "year",  "poster.url"]
+    SELECT_FIELDS = ["id", "name", "rating.kp", "year",  "poster.url", 'typeNumber']
+    TYPE_NUMBER_BY_TYPE_NAME = {
+        "фильм": 1,
+        "сериал": 2,
+        "мультик": 3, "мультфильм": 3,
+        "аниме": 4,
+        "мультсериал": 5, "мультисериал": 5,
+        "шоу": 6, "тв-шоу": 6, "твшоу": 6,
+    }
+    TYPE_NAME_BY_TYPE_NUMBER = {
+        1: "фильм",
+        2: "сериал",
+        3: "мультфильм",
+        4: "аниме",
+        5: "мультсериал",
+        6: "тв-шоу",
+    }
     USER_DATA_DIR_NAME = "userdata"
     PREV_MOVIE_FILTERS = dict()
     GENRE_NAMES = ['аниме', 'биография', 'боевик', 'вестерн', 'военный', 'детектив', 'детский', 'документальный',
