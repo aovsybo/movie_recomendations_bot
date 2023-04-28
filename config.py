@@ -6,7 +6,7 @@ from dotenv import find_dotenv, load_dotenv
 
 
 class Settings(BaseSettings):
-    KP_API_ADDRESS: HttpUrl = "https://api.kinopoisk.dev/v1"
+    KP_API_ADDRESS: HttpUrl = "https://api.kinopoisk.dev/v1.3"
     TG_API_TOKEN: str
     KP_API_TOKEN: str
     CURRENT_YEAR = date.today().strftime("%Y")

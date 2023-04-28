@@ -15,7 +15,7 @@ def get_movie(filters: dict, user_id: str):
     }
     filters["selectFields"] = ["id", "name", "rating.kp", "year"]
     filters["limit"] = settings.MOVIE_SEARCH_LIMIT
-    offset = 0
+    filters["page"] = 1
     movie = None
     while True:
         request = requests.get(f"{settings.KP_API_ADDRESS}/movie", headers=headers, params=filters).json()
@@ -25,7 +25,7 @@ def get_movie(filters: dict, user_id: str):
             return "Ошибка запроса"
         else:
             if len(movies) > 0:
-                for cur_movie in movies[offset:]:
+                for cur_movie in movies:
                     if not is_movie_banned(user_id, str(cur_movie["id"])):
                         movie = cur_movie
                         break
@@ -33,8 +33,7 @@ def get_movie(filters: dict, user_id: str):
                     ban_movie_for_user(user_id, movie["id"])
                     return configure_movie_string(movie)
                 else:
-                    offset += settings.MOVIE_SEARCH_LIMIT
-                    filters["limit"] += settings.MOVIE_SEARCH_LIMIT
+                    filters["page"] += 1
             else:
                 return "Не найдено фильмов"
 
