@@ -49,20 +49,11 @@ async def recommend_other_movie_by_filters(message: types.Message):
     await send_movie(movie, message.from_user.id, search_keyboard)
 
 
-# @dp.message_handler(commands=["/Похожий"])
-async def recommend_similar_movie(message: types.Message):
-    # await bot.send_message(
-    #     message.from_user.id,
-    #     get_movie(movie_filters, str(message.from_user.id)),
-    #     reply_markup=search_keyboard,
-    # )
-    pass
-
-
 # @dp.message_handler(commands=[])
 async def recommend_movie_by_filters(message: types.Message):
     movie_filters = text_analyse(message.text)
     setattr(settings, "PREV_MOVIE_FILTERS", movie_filters)
+    print(movie_filters)
     movie = get_movie(movie_filters, str(message.from_user.id))
     await send_movie(movie, message.from_user.id, search_keyboard)
 
@@ -71,5 +62,4 @@ def register_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands=["start", "help"])
     dp.register_message_handler(recommend_random_movie, commands=["Случайный_фильм"])
     dp.register_message_handler(recommend_other_movie_by_filters, commands=["Следующий"])
-    dp.register_message_handler(recommend_similar_movie, commands=["Похожий"])
     dp.register_message_handler(recommend_movie_by_filters)

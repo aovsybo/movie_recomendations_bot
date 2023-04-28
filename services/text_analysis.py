@@ -2,9 +2,6 @@ import spacy
 
 from config import settings
 
-# TODO: Сделать фильры по длительности фильма, по типу фильм-сериал и тд
-# TODO: Отсылать на похожие фильмы
-
 
 def text_analyse(text: str):
     filters = dict()
@@ -16,6 +13,8 @@ def text_analyse(text: str):
     for token in tokens:
         if is_lemma_genre(token):
             filters["genres.name"].append(token.lemma_)
+        elif is_text_genre(token):
+            filters["genres.name"].append(token.text)
         if is_lemma_type(token):
             filters['typeNumber'].append(settings.TYPE_NUMBER_BY_TYPE_NAME[token.lemma_])
         elif is_lemma_year(token):
@@ -26,7 +25,14 @@ def text_analyse(text: str):
 
 
 def is_lemma_genre(token):
-    if token.lemma_ in settings.GENRE_NAMES or token.text in settings.GENRE_NAMES:
+    if token.lemma_ in settings.GENRE_NAMES:
+        return True
+    else:
+        return False
+
+
+def is_text_genre(token):
+    if token.text in settings.GENRE_NAMES:
         return True
     else:
         return False
