@@ -53,6 +53,7 @@ async def recommend_other_movie_by_filters(message: types.Message):
 async def recommend_movie_by_filters(message: types.Message):
     movie_filters = text_analyse(message.text)
     setattr(settings, "PREV_MOVIE_FILTERS", movie_filters)
+    print(movie_filters)
     movie = get_movie(movie_filters, str(message.from_user.id))
     await send_movie(movie, message.from_user.id, search_keyboard)
 

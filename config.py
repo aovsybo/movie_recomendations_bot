@@ -9,7 +9,8 @@ class Settings(BaseSettings):
     KP_API_ADDRESS: HttpUrl = "https://api.kinopoisk.dev/v1.3"
     TG_API_TOKEN: str
     KP_API_TOKEN: str
-    CURRENT_YEAR = date.today().strftime("%Y")
+    CURRENT_YEAR = int(date.today().strftime("%Y"))
+    START_SEARCH_FROM_YEAR = CURRENT_YEAR - 15
     MAX_KP_RATING = 10
     MOVIE_SEARCH_LIMIT = 10
     SELECT_FIELDS = ["id", "name", "rating.kp", "year",  "poster.url", 'typeNumber']
@@ -35,7 +36,8 @@ class Settings(BaseSettings):
                    'драма', 'история', 'комедия', 'криминал', 'мелодрама', 'музыка', 'мультфильм', 'мюзикл',
                    'приключения', 'семейный', 'спорт', 'ток-шоу', 'триллер', 'ужасы', 'фантастика', 'фэнтези']
     RATING_NAMES = ["оценка", "рейтинг"]
-    YEAR_NAMES = ["год"]
+    YEAR_FROM_WORDS = ["от", "после", "старше", "с"]
+    YEAR_UNTIL_WORDS = ["до", "младше"]
 
     def __init__(self):
         load_dotenv(find_dotenv())
