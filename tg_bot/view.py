@@ -60,5 +60,5 @@ async def recommend_movie_by_filters(message: types.Message):
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(command_start, commands=["start", "help"])
     dp.register_message_handler(recommend_random_movie, commands=["Случайный_фильм"])
-    dp.register_message_handler(recommend_other_movie_by_filters, commands=["Следующий"])
+    dp.register_callback_query_handler(recommend_other_movie_by_filters, text="Следующий")
     dp.register_message_handler(recommend_movie_by_filters)
