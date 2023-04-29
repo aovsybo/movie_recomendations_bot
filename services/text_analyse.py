@@ -95,6 +95,8 @@ def format_year_string(token, current_year):
             return f"{settings.MIN_YEAR}-{checking_year}"
         return f"{current_year[0:4]}-{checking_year}"
     elif has_words_before(token, settings.YEAR_FROM_WORDS):
+        if checking_year > int(current_year[5:9]):
+            return f"{settings.MIN_YEAR}-{current_year[5:9]}"
         return f"{checking_year}-{current_year[5:9]}"
     else:
         return f"{token.text}-{token.text}"

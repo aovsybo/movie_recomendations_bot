@@ -57,9 +57,14 @@ class TextAnalyseYearTest(TestCase):
         year = f"{settings.START_SEARCH_FROM_YEAR}-2012"
         self.assertEqual(text_analyse(message)["year"], year)
 
-    def test_year_end_less_than_start(self):
+    def test_year_end_less_than_default(self):
         message = "Какой сериал в жанре драма посмотреть с рейтингом меньше 9 до 1980 года"
         year = f"{settings.MIN_YEAR}-1980"
+        self.assertEqual(text_analyse(message)["year"], year)
+
+    def test_year_end_less_than_start(self):
+        message = "Какой сериал в жанре драма посмотреть с рейтингом меньше 9 до 1960 года от 1990 года"
+        year = f"{settings.MIN_YEAR}-1960"
         self.assertEqual(text_analyse(message)["year"], year)
 
     def test_one_year(self):
@@ -73,7 +78,7 @@ class TextAnalyseYearTest(TestCase):
         self.assertEqual(text_analyse(message)["year"], year)
 
     def test_year_out_of_range(self):
-        message = "Аниме 1884 года"
+        message = "Аниме от 1884 до 1747 года"
         year = f"{settings.START_SEARCH_FROM_YEAR}-{settings.CURRENT_YEAR}"
         self.assertEqual(text_analyse(message)["year"], year)
 
