@@ -3,7 +3,6 @@ import spacy
 from config import settings
 
 
-# TODO: Тесты
 def text_analyse(text: str):
     filters = {
         "genres.name": [],
@@ -92,6 +91,8 @@ def format_year_string(token, current_year):
     чтобы получить диапазон в формате "year_start-year_end"""
     checking_year = int(token.text)
     if has_words_before(token, settings.YEAR_UNTIL_WORDS):
+        if checking_year < int(current_year[0:4]):
+            return f"{settings.MIN_YEAR}-{checking_year}"
         return f"{current_year[0:4]}-{checking_year}"
     elif has_words_before(token, settings.YEAR_FROM_WORDS):
         return f"{checking_year}-{current_year[5:9]}"

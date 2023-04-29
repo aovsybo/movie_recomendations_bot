@@ -2,7 +2,7 @@ from aiogram import types, Dispatcher
 
 from config import settings
 from services.kinopoisk import get_movie, get_random_movie
-from services.text_analysis import text_analyse
+from services.text_analyse import text_analyse
 from tg_bot.create_bot import bot
 from tg_bot.keyboard import search_keyboard, start_keyboard
 

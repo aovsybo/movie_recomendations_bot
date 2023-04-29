@@ -1,21 +1,21 @@
 from unittest import TestCase, main
 
 from config import settings
-from services.text_analysis import text_analyse
+from services.text_analyse import text_analyse
 
 
 class TextAnalyseRatingTest(TestCase):
-    def test_start_end(self):
+    def test_rating_start_end(self):
         message = "Хочу фильм с рейтингом от 3 до 6"
         rating = "3-6"
         self.assertEqual(text_analyse(message)["rating.kp"], rating)
 
-    def test_start(self):
+    def test_rating_start(self):
         message = "Посоветуй сериал 2012 года с оценкой выше 4"
         rating = f"4-{settings.MAX_KP_RATING}"
         self.assertEqual(text_analyse(message)["rating.kp"], rating)
 
-    def test_end(self):
+    def test_rating_end(self):
         message = "Какой сериал в жанре драма посмотреть с рейтингом меньше 9"
         rating = f"{settings.START_KP_RATING}-9"
         self.assertEqual(text_analyse(message)["rating.kp"], rating)
@@ -23,7 +23,6 @@ class TextAnalyseRatingTest(TestCase):
     def test_one_mark(self):
         message = "Комедия с оценкой 7"
         rating = "7-8"
-
         self.assertEqual(text_analyse(message)["rating.kp"], rating)
 
     def test_no_rating(self):
@@ -40,6 +39,43 @@ class TextAnalyseRatingTest(TestCase):
         message = "Аниме с рейтингом 23"
         rating = f"{settings.START_KP_RATING}-{settings.MAX_KP_RATING}"
         self.assertEqual(text_analyse(message)["rating.kp"], rating)
+
+
+class TextAnalyseYearTest(TestCase):
+    def test_year_start_end(self):
+        message = "Хочу фильм с рейтингом от 3 до 6 от 2000 года до 2004 года"
+        year = "2000-2004"
+        self.assertEqual(text_analyse(message)["year"], year)
+
+    def test_year_start(self):
+        message = "Посоветуй сериал после 2012 года с оценкой выше 4"
+        year = f"2012-{settings.CURRENT_YEAR}"
+        self.assertEqual(text_analyse(message)["year"], year)
+
+    def test_year_end(self):
+        message = "Посоветуй сериал до 2012 года с оценкой выше 4"
+        year = f"{settings.START_SEARCH_FROM_YEAR}-2012"
+        self.assertEqual(text_analyse(message)["year"], year)
+
+    def test_year_end_less_than_start(self):
+        message = "Какой сериал в жанре драма посмотреть с рейтингом меньше 9 до 1980 года"
+        year = f"{settings.MIN_YEAR}-1980"
+        self.assertEqual(text_analyse(message)["year"], year)
+
+    def test_one_year(self):
+        message = "Комедия с оценкой 7 2008 года"
+        year = "2008-2008"
+        self.assertEqual(text_analyse(message)["year"], year)
+
+    def test_no_year(self):
+        message = "Сериал в жанре фантастика с оценкой 8"
+        year = f"{settings.START_SEARCH_FROM_YEAR}-{settings.CURRENT_YEAR}"
+        self.assertEqual(text_analyse(message)["year"], year)
+
+    def test_year_out_of_range(self):
+        message = "Аниме 1884 года"
+        year = f"{settings.START_SEARCH_FROM_YEAR}-{settings.CURRENT_YEAR}"
+        self.assertEqual(text_analyse(message)["year"], year)
 
 
 class TextAnalyseGenreTest(TestCase):
