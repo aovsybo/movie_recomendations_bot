@@ -104,7 +104,7 @@ def format_rating_string(token, current_rating):
     if has_words_before(token, settings.RATING_UNTIL_WORDS):
         return f"{current_rating[0:1]}-{checking_rating}"
     elif has_words_before(token, settings.RATING_FROM_WORDS):
-        return f"{checking_rating}-{current_rating[2:3]}"
+        return f"{checking_rating}-{current_rating[2:]}"
     else:
         return f"{checking_rating}-{checking_rating+1}"
 
