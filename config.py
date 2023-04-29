@@ -11,7 +11,10 @@ class Settings(BaseSettings):
     KP_API_TOKEN: str
     CURRENT_YEAR = int(date.today().strftime("%Y"))
     START_SEARCH_FROM_YEAR = CURRENT_YEAR - 15
+    MIN_YEAR = 1900
     MAX_KP_RATING = 10
+    START_KP_RATING = 7
+    MIN_KP_RATING = 1
     MOVIE_SEARCH_LIMIT = 10
     SELECT_FIELDS = ["id", "name", "rating.kp", "year",  "poster.url", 'typeNumber']
     TYPE_NUMBER_BY_TYPE_NAME = {
@@ -35,9 +38,11 @@ class Settings(BaseSettings):
     GENRE_NAMES = ['аниме', 'биография', 'боевик', 'вестерн', 'военный', 'детектив', 'детский', 'документальный',
                    'драма', 'история', 'комедия', 'криминал', 'мелодрама', 'музыка', 'мультфильм', 'мюзикл',
                    'приключения', 'семейный', 'спорт', 'ток-шоу', 'триллер', 'ужасы', 'фантастика', 'фэнтези']
-    RATING_NAMES = ["оценка", "рейтинг"]
+    RATING_WORDS = ["оценка", "балл", "рейтинг"]
     YEAR_FROM_WORDS = ["от", "после", "старше", "с"]
     YEAR_UNTIL_WORDS = ["до", "младше"]
+    RATING_FROM_WORDS = ["от", "выше", "больше"]
+    RATING_UNTIL_WORDS = ["до", "ниже", "меньше"]
 
     def __init__(self):
         load_dotenv(find_dotenv())

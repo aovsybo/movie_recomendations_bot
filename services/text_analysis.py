@@ -3,11 +3,14 @@ import spacy
 from config import settings
 
 
+# TODO: Тесты
 def text_analyse(text: str):
-    filters = dict()
-    filters["genres.name"] = []
-    filters["typeNumber"] = []
-    filters["year"] = f"{settings.START_SEARCH_FROM_YEAR}-{settings.CURRENT_YEAR}"
+    filters = {
+        "genres.name": [],
+        "typeNumber": [],
+        "year": f"{settings.START_SEARCH_FROM_YEAR}-{settings.CURRENT_YEAR}",
+        "rating.kp": f"{settings.START_KP_RATING}-{settings.MAX_KP_RATING}",
+    }
     nlp = spacy.load("ru_core_news_sm")
     doc = nlp(text)
     tokens = [token for token in doc if not token.is_punct]
@@ -19,19 +22,9 @@ def text_analyse(text: str):
         if is_lemma_type(token):
             filters['typeNumber'].append(settings.TYPE_NUMBER_BY_TYPE_NAME[token.lemma_])
         elif is_lemma_year(token):
-            # Если лемма является годом, то проверяем, это год начала поиска, или конца поиска,
-            # или нужен фильм конкретного года (тогда год и начала, и конца),
-            # и в зависимости от этого подставляем год в ту или иную позицию
-            # чтобы получить диапазон в формате "year_start-year_end"
-            year = int(token.text)
-            if has_words_before_year(token, settings.YEAR_UNTIL_WORDS):
-                filters['year'] = f"{filters['year'][0:4]}-{year}"
-            elif has_words_before_year(token, settings.YEAR_FROM_WORDS):
-                filters['year'] = f"{year}-{filters['year'][5:9]}"
-            else:
-                filters["year"] = f"{token.text}-{token.text}"
-        elif is_lemma_rating(token):
-            filters["rating.kp"] = f"{round(float(token.nbor(1).text), 0)}-{settings.MAX_KP_RATING}"
+            filters['year'] = format_year_string(token, filters['year'])
+        elif is_lemma_rating(token) and has_rating_words([t.lemma_ for t in doc if not t.is_punct]):
+            filters["rating.kp"] = format_rating_string(token, filters["rating.kp"])
     return filters
 
 
@@ -63,12 +56,24 @@ def is_lemma_year(token):
         except ValueError:
             return False
         else:
-            if 1900 <= num <= settings.CURRENT_YEAR:
+            if settings.MIN_YEAR <= num <= settings.CURRENT_YEAR:
                 return True
     return False
 
 
-def has_words_before_year(token, word_list: list[str]):
+def is_lemma_rating(token):
+    if token.pos_ == "NUM"  and len(token.text) in (1, 2):
+        try:
+            num = int(token.text)
+        except ValueError:
+            return False
+        else:
+            if settings.MIN_KP_RATING <= num <= settings.MAX_KP_RATING:
+                return True
+    return False
+
+
+def has_words_before(token, word_list: list[str]):
     try:
         text_before = token.nbor(-1).text
     except IndexError:
@@ -80,11 +85,29 @@ def has_words_before_year(token, word_list: list[str]):
             return False
 
 
-def is_lemma_rating(token):
-    if token.pos_ == "NOUN" and token.lemma_ in settings.RATING_NAMES:
-        try:
-            if token.nbor(1).pos_ == "NUM":
-                return True
-        except IndexError:
-            return False
-    return False
+def format_year_string(token, current_year):
+    """Если лемма является годом (1900-н.в.), то проверяем, это начало или конец диапазона,
+    либо конкретный год без диапазона (тогда он и начало, и конец),
+    и в зависимости от этого подставляем год в ту или иную позицию
+    чтобы получить диапазон в формате "year_start-year_end"""
+    checking_year = int(token.text)
+    if has_words_before(token, settings.YEAR_UNTIL_WORDS):
+        return f"{current_year[0:4]}-{checking_year}"
+    elif has_words_before(token, settings.YEAR_FROM_WORDS):
+        return f"{checking_year}-{current_year[5:9]}"
+    else:
+        return f"{token.text}-{token.text}"
+
+
+def format_rating_string(token, current_rating):
+    checking_rating = int(token.text)
+    if has_words_before(token, settings.RATING_UNTIL_WORDS):
+        return f"{current_rating[0:1]}-{checking_rating}"
+    elif has_words_before(token, settings.RATING_FROM_WORDS):
+        return f"{checking_rating}-{current_rating[2:3]}"
+    else:
+        return f"{checking_rating}-{checking_rating+1}"
+
+
+def has_rating_words(tokens):
+    return True if set(tokens).intersection(set(settings.RATING_WORDS)) else False
