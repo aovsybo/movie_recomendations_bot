@@ -42,5 +42,43 @@ class TextAnalyseRatingTest(TestCase):
         self.assertEqual(text_analyse(message)["rating.kp"], rating)
 
 
+class TextAnalyseGenreTest(TestCase):
+    def test_anime(self):
+        message = "Смотреть аниме до 8 баллов"
+        genre = ["аниме"]
+        self.assertEqual(text_analyse(message)["genres.name"], genre)
+
+    def test_family(self):
+        message = "Семейный фильм с оценкой выше 8"
+        genre = ["семейный"]
+        self.assertEqual(text_analyse(message)["genres.name"], genre)
+
+    def test_fantasy_and_comedy(self):
+        message = "Хочу посмотерть комедию с элементами фэнтези"
+        genre = ["комедия", "фэнтези"]
+        self.assertEqual(text_analyse(message)["genres.name"], genre)
+
+    def test_no_genre(self):
+        message = "Хочу фильм с рейтингом от 3 до 9"
+        genre = []
+        self.assertEqual(text_analyse(message)["genres.name"], genre)
+
+    # Теперь проверка типа контента (фильм, сериал, мультфильм...)
+    def test_show(self):
+        message = "Хочу посмотреть сериал старше 2014 года"
+        movie_type = [2]
+        self.assertEqual(text_analyse(message)["typeNumber"], movie_type)
+
+    def test_cartoon(self):
+        message = "Мультфильм 2014 с оценкой 7"
+        movie_type = [3]
+        self.assertEqual(text_analyse(message)["typeNumber"], movie_type)
+
+    def test_no_type(self):
+        message = "Посоветуй комедию 2014 года"
+        movie_type = []
+        self.assertEqual(text_analyse(message)["typeNumber"], movie_type)
+
+
 if __name__ == '__main__':
     main()
