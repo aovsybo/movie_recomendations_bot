@@ -115,6 +115,11 @@ class TextAnalyseGenreTest(TestCase):
         movie_type = [3]
         self.assertEqual(text_analyse(message)["typeNumber"], movie_type)
 
+    def test_movie_and_anime(self):
+        message = "Хочу посмотреть аниме фильм с оценкой от 5"
+        movie_type = [4, 1]
+        self.assertEqual(text_analyse(message)["typeNumber"], movie_type)
+
     def test_no_type(self):
         message = "Посоветуй комедию 2014 года"
         movie_type = []
