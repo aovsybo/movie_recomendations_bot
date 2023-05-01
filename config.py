@@ -12,9 +12,9 @@ class Settings(BaseSettings):
     CURRENT_YEAR = int(date.today().strftime("%Y"))
     START_SEARCH_FROM_YEAR = CURRENT_YEAR - 15
     MIN_YEAR = 1900
-    MAX_KP_RATING = 10
-    START_KP_RATING = 7
-    MIN_KP_RATING = 1
+    MAX_KP_RATING = 10.0
+    START_KP_RATING = 7.0
+    MIN_KP_RATING = 1.0
     MOVIE_SEARCH_LIMIT = 10
     SELECT_FIELDS = ["id", "name", "rating.kp", "year",  "poster.url", 'typeNumber']
     TYPE_NUMBER_BY_TYPE_NAME = {
