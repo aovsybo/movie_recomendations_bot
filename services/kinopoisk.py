@@ -5,15 +5,16 @@ from model import is_movie_banned, ban_movie_for_user
 
 
 def get_movie(filters: dict, user_id: str):
-    headers = {
-        "X-API-KEY": settings.KP_API_TOKEN,
-    }
     filters["selectFields"] = settings.SELECT_FIELDS
     filters["limit"] = settings.MOVIE_SEARCH_LIMIT
     filters["page"] = 1
     movie = None
     while True:
-        request = requests.get(f"{settings.KP_API_ADDRESS}/movie", headers=headers, params=filters).json()
+        request = requests.get(
+            f"{settings.KP_API_ADDRESS}/movie",
+            headers={"X-API-KEY": settings.KP_API_TOKEN},
+            params=filters
+        ).json()
         try:
             movies = request["docs"]
         except Exception:
@@ -34,12 +35,13 @@ def get_movie(filters: dict, user_id: str):
 
 
 def get_random_movie():
-    headers = {
-        "X-API-KEY": settings.KP_API_TOKEN
-    }
     params = {
         "selectFields": settings.SELECT_FIELDS
     }
-    movie = requests.get(f"{settings.KP_API_ADDRESS}/movie/random", headers=headers, params=params).json()
+    movie = requests.get(
+        f"{settings.KP_API_ADDRESS}/movie/random",
+        headers={"X-API-KEY": settings.KP_API_TOKEN},
+        params=params
+    ).json()
     return movie
 

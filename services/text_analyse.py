@@ -4,12 +4,7 @@ from config import settings
 
 
 def text_analyse(text: str):
-    filters = {
-        "genres.name": [],
-        "typeNumber": [],
-        "year": f"{settings.START_SEARCH_FROM_YEAR}-{settings.CURRENT_YEAR}",
-        "rating.kp": f"{settings.START_KP_RATING}-{settings.MAX_KP_RATING}",
-    }
+    filters = init_filters()
     nlp = spacy.load("ru_core_news_sm")
     doc = nlp(text)
     tokens = [token for token in doc if not token.is_punct]
@@ -39,6 +34,15 @@ def text_analyse(text: str):
                 settings.MIN_KP_RATING
             )
     return filters
+
+
+def init_filters():
+    return {
+        "genres.name": [],
+        "typeNumber": [],
+        "year": f"{settings.START_SEARCH_FROM_YEAR}-{settings.CURRENT_YEAR}",
+        "rating.kp": f"{settings.START_KP_RATING}-{settings.MAX_KP_RATING}",
+    }
 
 
 def is_lemma_genre(token):
