@@ -1,12 +1,12 @@
 import os
 from datetime import date
 
-from pydantic import BaseSettings, HttpUrl
 from dotenv import find_dotenv, load_dotenv
+from pydantic import BaseSettings, HttpUrl
 
 
 class Settings(BaseSettings):
-    KP_API_ADDRESS: HttpUrl = "https://api.kinopoisk.dev/v1.3"
+    KP_API_ADDRESS: HttpUrl = "https://api.kinopoisk.dev/"
     TG_API_TOKEN: str
     KP_API_TOKEN: str
     CURRENT_YEAR = int(date.today().strftime("%Y"))
@@ -49,6 +49,7 @@ class Settings(BaseSettings):
         TG_API_TOKEN = os.environ.get("TG_API_TOKEN")
         KP_API_TOKEN = os.environ.get("KP_API_TOKEN")
         super().__init__()
+
 
 
 settings = Settings()

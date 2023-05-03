@@ -48,22 +48,19 @@ def init_filters():
 def is_lemma_genre(token):
     if token.lemma_ in settings.GENRE_NAMES:
         return True
-    else:
-        return False
+    return False
 
 
 def is_text_genre(token):
     if token.text in settings.GENRE_NAMES:
         return True
-    else:
-        return False
+    return False
 
 
 def is_lemma_type(token):
     if token.lemma_ in settings.TYPE_NUMBER_BY_TYPE_NAME:
         return True
-    else:
-        return False
+    return False
 
 
 def is_lemma_year(token):
@@ -98,8 +95,7 @@ def has_words_before(token, word_list: list[str]):
     else:
         if text_before in word_list:
             return True
-        else:
-            return False
+        return False
 
 
 def format_string_for_request(token, current_value, current_type, from_words, until_words, min_value):
@@ -124,4 +120,6 @@ def format_string_for_request(token, current_value, current_type, from_words, un
 
 
 def has_rating_words(tokens):
-    return True if set(tokens).intersection(set(settings.RATING_WORDS)) else False
+    if set(tokens).intersection(set(settings.RATING_WORDS)):
+        return True
+    return False
