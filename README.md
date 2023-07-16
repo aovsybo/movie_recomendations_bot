@@ -1,4 +1,4 @@
-# Matje_recomendations_bot
+# Movie recomendations bot
 
 ## Description
 Telegram bot @Matje_recomendations_bot, that can recommend you a movie accoding to your free-form ru-lang request, including year, rating, genre etc. Also it can recommend random movie if there are no any preferences.
