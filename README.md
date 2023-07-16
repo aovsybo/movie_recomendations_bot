@@ -1,10 +1,10 @@
 # Matje_recomendations_bot
 
 ## Description
-Telegram bot @Matje_recomendations_bot, that can recommend you a movie accoding to your free-form ru-lang request, including year, rating, genre etc. Also it can recommend random movie if there are nott any preferences.
+Telegram bot @Matje_recomendations_bot, that can recommend you a movie accoding to your free-form ru-lang request, including year, rating, genre etc. Also it can recommend random movie if there are no any preferences.
 
 ## Technologies
-Uses library "SpaCy" for NLP in order to convert natural language from user message to dictionary of filtres for searching a movie. It allows to get word infinitive, that simplifies the problem of determining if a word is a filter or not. For example, ф the word represents the year if its word class is number and in length is 4. 
+Uses library "SpaCy" for NLP in order to convert natural language from user message to dictionary of filtres for searching a movie. It allows to get word infinitive, that simplifies the problem of determining if a word is a filter or not. For example, the word represents the year if its word class is a number and its length is 4. 
 
 ## Usage
 To use it, you need to send message to bot with your preferences as it is on the picture below.
